@@ -897,12 +897,14 @@ class Translator(Inference):
             memory_lengths=src_lengths,
             src_map=src_map,
         )
-
-        log_probs[:, :, self._tgt_pad_idx] = 0
-        gold = tgt[1:]
-        gold_scores = log_probs.gather(2, gold)
-        gold_scores = gold_scores.sum(dim=0).view(-1)
-
+        
+        try:
+          log_probs[:, :, self._tgt_pad_idx] = 0
+          gold = tgt[1:]
+          gold_scores = log_probs.gather(2, gold)
+          gold_scores = gold_scores.sum(dim=0).view(-1)
+        except:
+          gold_scores = torch.Tensor([0]).to(self._dev)
         return gold_scores
 
 
