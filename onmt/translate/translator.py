@@ -820,8 +820,9 @@ class Translator(Inference):
         # (2) prep decode_strategy. Possibly repeat src objects.
         src_map = batch.src_map if use_src_map else None
         tgt_map = batch.tgt_map if use_src_map else None
-        print(src_map.shape)
-        print(tgt_map.shape)
+        if use_src_map:
+            print(src_map.shape)
+            print(tgt_map.shape)
         target_prefix = batch.tgt if self.tgt_prefix else None
         (
             fn_map_state,
@@ -832,8 +833,9 @@ class Translator(Inference):
         ) = decode_strategy.initialize(
             memory_bank, src_lengths, src_map, tgt_map, target_prefix=target_prefix
         )
-        print(src_map.shape)
-        print(tgt_map.shape)
+        if use_src_map:
+            print(src_map.shape)
+            print(tgt_map.shape)
         if fn_map_state is not None:
             self.model.decoder.map_state(fn_map_state)
 
