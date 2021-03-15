@@ -66,7 +66,7 @@ def _dynamic_dict(example, src_field, tgt_field):
     example["src_map"] = src_map
     example["src_ex_vocab"] = src_ex_vocab
     
-    tgt_ex_vocab = Vocab(Counter(tgt), specials=[unk, pad])
+    tgt_ex_vocab = Vocab(Counter(tgt), specials=[tgt_unk, tgt_pad])
     # Map target tokens to indices in the dynamic dict.
     tgt_map = torch.LongTensor([tgt_ex_vocab.stoi[w] for w in tgt])
     example["tgt_map"] = tgt_map
