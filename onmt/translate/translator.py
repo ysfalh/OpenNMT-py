@@ -797,6 +797,7 @@ class Translator(Inference):
             results (dict): The translation results.
         """
         # (0) Prep the components of the search.
+        print(self.copy_attn)
         use_src_map = self.copy_attn
         parallel_paths = decode_strategy.parallel_paths  # beam_size
         batch_size = batch.batch_size
