@@ -827,7 +827,7 @@ class Translator(Inference):
             src_map,
             tgt_map,
         ) = decode_strategy.initialize(
-            memory_bank, src_lengths, tgt_map, target_prefix=target_prefix
+            memory_bank, src_lengths, src_map, tgt_map, target_prefix=target_prefix
         )
         if fn_map_state is not None:
             self.model.decoder.map_state(fn_map_state)
