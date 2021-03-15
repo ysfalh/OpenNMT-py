@@ -106,7 +106,7 @@ class DecodeStrategy(object):
             mb_device = memory_bank.device
         return mb_device
 
-    def initialize_tile(self, memory_bank, src_lengths, src_map=None,
+    def initialize_tile(self, memory_bank, src_lengths, src_map=None, tgt_map=None,
                         target_prefix=None):
         def fn_map_state(state, dim):
             return tile(state, self.beam_size, dim=dim)
@@ -118,14 +118,16 @@ class DecodeStrategy(object):
             memory_bank = tile(memory_bank, self.beam_size, dim=1)
         if src_map is not None:
             src_map = tile(src_map, self.beam_size, dim=1)
+        if tgt_map is not None:
+            tgt_map = tile(tgt_map, self.beam_size, dim=1)
 
         self.memory_lengths = tile(src_lengths, self.beam_size)
         if target_prefix is not None:
             target_prefix = tile(target_prefix, self.beam_size, dim=1)
 
-        return fn_map_state, memory_bank, src_map, target_prefix
+        return fn_map_state, memory_bank, src_map, tgt_map, target_prefix
 
-    def initialize(self, memory_bank, src_lengths, src_map=None, device=None,
+    def initialize(self, memory_bank, src_lengths, src_map=None, tgt_map=None, device=None,
                    target_prefix=None):
         """DecodeStrategy subclasses should override :func:`initialize()`.
 
@@ -153,7 +155,7 @@ class DecodeStrategy(object):
             self.min_length += min(prefix_non_pad)-1
 
         self.target_prefix = target_prefix  # NOTE: forced prefix words
-        return None, memory_bank, src_lengths, src_map
+        return None, memory_bank, src_lengths, src_map, tgt_map
 
     def __len__(self):
         return self.alive_seq.shape[1]
