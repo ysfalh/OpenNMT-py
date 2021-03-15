@@ -823,6 +823,7 @@ class Translator(Inference):
             fn_map_state,
             memory_bank,
             memory_lengths,
+            src_map,
             tgt_map,
         ) = decode_strategy.initialize(
             memory_bank, src_lengths, tgt_map, target_prefix=target_prefix
