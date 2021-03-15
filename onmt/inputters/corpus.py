@@ -45,7 +45,7 @@ class DatasetAdapter(object):
     """Adapte a buckets of tuples into examples of a torchtext Dataset."""
 
     valid_field_name = (
-        'src', 'tgt', 'indices', 'src_map', 'src_ex_vocab', 'alignment',
+        'src', 'tgt', 'indices', 'src_map', 'tgt_map', 'src_ex_vocab', 'alignment',
         'align')
 
     def __init__(self, fields, is_train):
@@ -78,7 +78,7 @@ class DatasetAdapter(object):
 
     def _maybe_add_dynamic_dict(self, example, fields):
         """maybe update `example` with dynamic_dict related fields."""
-        if 'src_map' in fields and 'alignment' in fields:
+        if 'src_map' in fields and 'tgt_map' in fields and 'alignment' in fields:
             example = _dynamic_dict(
                 example,
                 fields['src'].base_field,
