@@ -580,7 +580,7 @@ class Inference(object):
         dec_out, dec_attn = self.model.decoder(
             decoder_in, memory_bank, memory_lengths=memory_lengths, step=step
         )
-
+        print(self.copy_attn)
         # Generator forward.
         if not self.copy_attn:
             if "std" in dec_attn:
@@ -591,6 +591,7 @@ class Inference(object):
             # returns [(batch_size x beam_size) , vocab ] when 1 step
             # or [ tgt_len, batch_size, vocab ] when full sentence
         else:
+            print('bang')
             attn = dec_attn["copy"]
             scores = self.model.generator(
                 dec_out.view(-1, dec_out.size(2)),
