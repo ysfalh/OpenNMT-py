@@ -817,14 +817,15 @@ class Translator(Inference):
 
         # (2) prep decode_strategy. Possibly repeat src objects.
         src_map = batch.src_map if use_src_map else None
+        tgt_map = batch.tgt_map if use_src_map else None
         target_prefix = batch.tgt if self.tgt_prefix else None
         (
             fn_map_state,
             memory_bank,
             memory_lengths,
-            src_map,
+            tgt_map,
         ) = decode_strategy.initialize(
-            memory_bank, src_lengths, src_map, target_prefix=target_prefix
+            memory_bank, src_lengths, tgt_map, target_prefix=target_prefix
         )
         if fn_map_state is not None:
             self.model.decoder.map_state(fn_map_state)
@@ -839,7 +840,7 @@ class Translator(Inference):
                 batch,
                 src_vocabs,
                 memory_lengths=memory_lengths,
-                src_map=src_map,
+                src_map=tgt_map,
                 step=step,
                 batch_offset=decode_strategy.batch_offset,
             )
@@ -864,8 +865,8 @@ class Translator(Inference):
 
                 memory_lengths = memory_lengths.index_select(0, select_indices)
 
-                if src_map is not None:
-                    src_map = src_map.index_select(1, select_indices)
+                if tgt_map is not None:
+                    tgt_map = tgt_map.index_select(1, select_indices)
 
             if parallel_paths > 1 or any_finished:
                 self.model.decoder.map_state(
