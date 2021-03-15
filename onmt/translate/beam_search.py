@@ -93,10 +93,10 @@ class BeamSearchBase(DecodeStrategy):
     def initialize(self, *args, **kwargs):
         raise NotImplementedError
 
-    def initialize_(self, memory_bank, memory_lengths, src_map, device,
+    def initialize_(self, memory_bank, memory_lengths, src_map, tgt_map, device,
                     target_prefix):
         super(BeamSearchBase, self).initialize(
-            memory_bank, memory_lengths, src_map, device, target_prefix)
+            memory_bank, memory_lengths, src_map, tgt_map, device, target_prefix)
 
         self.best_scores = torch.full(
             [self.batch_size], -1e10, dtype=torch.float, device=device)
@@ -323,22 +323,22 @@ class BeamSearch(BeamSearchBase):
     """
         Beam search for seq2seq/encoder-decoder models
     """
-    def initialize(self, memory_bank, src_lengths, src_map=None, device=None,
+    def initialize(self, memory_bank, src_lengths, src_map=None, tgt_map=None, device=None,
                    target_prefix=None):
         """Initialize for decoding.
         Repeat src objects `beam_size` times.
         """
 
-        (fn_map_state, memory_bank, src_map,
+        (fn_map_state, memory_bank, src_map, tgt_map,
             target_prefix) = self.initialize_tile(
-                memory_bank, src_lengths, src_map, target_prefix)
+                memory_bank, src_lengths, src_map, tgt_map, target_prefix)
         if device is None:
             device = self.get_device_from_memory_bank(memory_bank)
 
         super(BeamSearch, self).initialize_(
-            memory_bank, self.memory_lengths, src_map, device, target_prefix)
+            memory_bank, self.memory_lengths, src_map, tgt_map, device, target_prefix)
 
-        return fn_map_state, memory_bank, self.memory_lengths, src_map
+        return fn_map_state, memory_bank, self.memory_lengths, src_map, tgt_map
 
 
 class BeamSearchLM(BeamSearchBase):
