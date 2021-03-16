@@ -190,6 +190,14 @@ def get_fields(
 
         src_ex_vocab = RawField()
         fields["src_ex_vocab"] = src_ex_vocab
+        
+        tgt_map = Field(
+            use_vocab=False, dtype=torch.float,
+            postprocessing=make_tgt, sequential=False)
+        fields["tgt_map"] = tgt_map
+
+        tgt_ex_vocab = RawField()
+        fields["tgt_ex_vocab"] = tgt_ex_vocab
 
         align = Field(
             use_vocab=False, dtype=torch.long,
@@ -227,6 +235,8 @@ class IterOnDevice(object):
                 if hasattr(batch, 'alignment') else None
             batch.src_map = batch.src_map.to(device) \
                 if hasattr(batch, 'src_map') else None
+            batch.tgt_map = batch.tgt_map.to(device) \
+                if hasattr(batch, 'tgt_map') else None
             batch.align = batch.align.to(device) \
                 if hasattr(batch, 'align') else None
 
