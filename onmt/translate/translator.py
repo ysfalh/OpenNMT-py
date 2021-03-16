@@ -580,7 +580,7 @@ class Inference(object):
         dec_out, dec_attn = self.model.decoder(
             decoder_in, memory_bank, memory_lengths=memory_lengths, step=step
         )
-        print(self.copy_attn)
+        use_src_map = src_map is not None
         # Generator forward.
         if not use_src_map or not self.copy_attn:
             if "std" in dec_attn:
