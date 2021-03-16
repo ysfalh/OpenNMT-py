@@ -824,6 +824,8 @@ class Translator(Inference):
             print(src_map.shape)
             print(tgt_map.shape)
         target_prefix = batch.tgt if self.tgt_prefix else None
+        print(len(decode_strategy.initialize(
+            memory_bank, src_lengths, src_map, tgt_map, target_prefix=target_prefix)))
         (
             fn_map_state,
             memory_bank,
