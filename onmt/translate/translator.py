@@ -317,7 +317,7 @@ class Inference(object):
         batch_size,
         src,
     ):
-        if "tgt" in batch.__dict__:
+        if use_src_map and "tgt" in batch.__dict__:
             gs = self._score_target(
                 batch,
                 memory_bank,
