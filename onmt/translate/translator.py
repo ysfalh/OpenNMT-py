@@ -818,7 +818,6 @@ class Translator(Inference):
         )
 
         # (2) prep decode_strategy. Possibly repeat src objects.
-        print(batch.tgt_map)
         src_map = batch.src_map if use_src_map else None
         tgt_map = batch.tgt_map if use_src_map else None
         if use_src_map:
