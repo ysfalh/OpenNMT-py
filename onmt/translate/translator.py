@@ -810,7 +810,7 @@ class Translator(Inference):
             memory_bank,
             src_lengths,
             src_vocabs,
-            use_src_map,
+            False, # use_src_map
             enc_states,
             batch_size,
             src,
