@@ -41,6 +41,15 @@ def make_src(data, vocab):
             alignment[j, i, t] = 1
     return alignment
 
+def make_tgt_map(data, vocab):
+    tgt_size = max([t.size(0) for t in data])
+    tgt_vocab_size = max([t.max() for t in data]) + 1
+    alignment = torch.zeros(tgt_size, len(data), tgt_vocab_size)
+    for i, sent in enumerate(data):
+        for j, t in enumerate(sent):
+            alignment[j, i, t] = 1
+    return alignment
+
 
 def make_tgt(data, vocab):
     tgt_size = max([t.size(0) for t in data])
@@ -193,7 +202,7 @@ def get_fields(
         
         tgt_map = Field(
             use_vocab=False, dtype=torch.float,
-            postprocessing=make_tgt, sequential=False)
+            postprocessing=make_tgt_map, sequential=False)
         fields["tgt_map"] = tgt_map
 
         tgt_ex_vocab = RawField()
