@@ -797,8 +797,7 @@ class Translator(Inference):
             results (dict): The translation results.
         """
         # (0) Prep the components of the search.
-        # use_src_map = self.copy_attn
-        use_src_map = self.tgt_prefix
+        use_src_map = self.copy_attn
         parallel_paths = decode_strategy.parallel_paths  # beam_size
         batch_size = batch.batch_size
 
@@ -822,7 +821,9 @@ class Translator(Inference):
         tgt_map = batch.tgt_map if use_src_map else None
         if use_src_map:
             print(src_map.shape)
+            print(src_map)
             print(tgt_map.shape)
+            print(tgt_map)
         target_prefix = batch.tgt if self.tgt_prefix else None
         print(len(decode_strategy.initialize(
             memory_bank, src_lengths, src_map, tgt_map, target_prefix=target_prefix)))
