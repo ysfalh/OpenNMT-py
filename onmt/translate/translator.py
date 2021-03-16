@@ -582,7 +582,7 @@ class Inference(object):
         )
         print(self.copy_attn)
         # Generator forward.
-        if not self.copy_attn:
+        if not use_src_map or not self.copy_attn:
             if "std" in dec_attn:
                 attn = dec_attn["std"]
             else:
