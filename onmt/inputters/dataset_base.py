@@ -13,7 +13,6 @@ def _join_dicts(*args):
     """
     Args:
         dictionaries with disjoint keys.
-
     Returns:
         a single dictionary that has the union of these keys.
     """
@@ -23,20 +22,17 @@ def _join_dicts(*args):
 
 def _dynamic_dict(example, src_field, tgt_field):
     """Create copy-vocab and numericalize with it.
-
     In-place adds ``"src_map"`` to ``example``. That is the copy-vocab
     numericalization of the tokenized ``example["src"]``. If ``example``
     has a ``"tgt"`` key, adds ``"alignment"`` to example. That is the
     copy-vocab numericalization of the tokenized ``example["tgt"]``. The
     alignment has an initial and final UNK token to match the BOS and EOS
     tokens.
-
     Args:
         example (dict): An example dictionary with a ``"src"`` key and
             maybe a ``"tgt"`` key. (This argument changes in place!)
         src_field (torchtext.data.Field): Field object.
         tgt_field (torchtext.data.Field): Field object.
-
     Returns:
         ``example``, changed as described.
     """
@@ -82,7 +78,6 @@ def _dynamic_dict(example, src_field, tgt_field):
 
 class Dataset(TorchtextDataset):
     """Contain data and process it.
-
     A dataset is an object that accepts sequences of raw data (sentence pairs
     in the case of machine translation) and fields which describe how this
     raw data should be processed to produce tensors. When a dataset is
@@ -90,7 +85,6 @@ class Dataset(TorchtextDataset):
     the bit that numericalizes it or turns it into batch tensors) to the raw
     data, producing a list of :class:`torchtext.data.Example` objects.
     torchtext's iterators then know how to use these examples to make batches.
-
     Args:
         fields (dict[str, Field]): a dict with the structure
             returned by :func:`onmt.inputters.get_fields()`. Usually
@@ -117,7 +111,6 @@ class Dataset(TorchtextDataset):
         filter_pred (Callable[[torchtext.data.Example], bool]): A function
             that accepts Example objects and returns a boolean value
             indicating whether to include that example in the dataset.
-
     Attributes:
         src_vocabs (List[torchtext.data.Vocab]): Used with dynamic dict/copy
             attention. There is a very short vocab for each src example.
@@ -127,7 +120,7 @@ class Dataset(TorchtextDataset):
 
     def __init__(self, fields, readers, data, sort_key, filter_pred=None):
         self.sort_key = sort_key
-        can_copy = 'src_map' in fields and 'tgt_map' in fields and 'alignment' in fields
+        can_copy = 'src_map' in fields and 'alignment' in fields
 
         read_iters = [r.read(dat[1], dat[0]) for r, dat in zip(readers, data)]
 
